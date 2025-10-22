@@ -14,7 +14,7 @@
 |--------|-------------|
 | **Nombre del proyecto:** | TeatroTickets |
 | **Tipo de aplicación:** | Web |
-| **Lenguaje / entorno de desarrollo:** | .net y react |
+| **Lenguaje / entorno de desarrollo:** | .net y angular |
 | **Repositorio Git (URL):** | https://github.com/catorceno/prograII-proyecto-final.git |
 | **Uso de Inteligencia Artificial:** | Sí |
 
@@ -63,9 +63,9 @@ Marca los que planeas usar:
 
 | Nº | Nombre de la funcionalidad | Descripción breve | Estado actual |
 |----|-----------------------------|-------------------|----------------|
-| 1 | Sign in y login | Registro de usuarios e inicio de sesión. | ☐ Planeada |
-| 2 | Consulta de cartelera | Visualizar funciones, filtrado por fecha y categoría | ☐ Planeada |
-| 3 | Reserva de butacas | Mapa de la sala, selección de asiento, reserva temporal y pago. | ☐ Planeada |
+| 1 | Consulta de cartelera | Visualizar funciones disponibles | ☐ Planeada |
+| 2 | Reserva de butacas | Mapa de la sala, selección de asiento y reserva temporal | ☐ Planeada |
+| 3 | Proceso de pago | Realizar pago y registrar ticket | ☐ Planeada |
 
 ---
 
