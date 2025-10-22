@@ -1,0 +1,101 @@
+# Propuesta Inicial de Proyecto – Programación Orientada a Objetos
+
+**Carrera:** Ingeniería de Software  
+**Materia:** Programación Orientada a Objetos  
+**Periodo:** Segundo Parcial / Proyecto Final  
+**Estudiante:** Camila Alison Catorceno Orellana  
+**Fecha de entrega:** 2025-10-14  
+
+---
+
+## 1. Datos Generales del Proyecto
+
+| Campo | Descripción |
+|--------|-------------|
+| **Nombre del proyecto:** | TeatroTickets |
+| **Tipo de aplicación:** | Web |
+| **Lenguaje / entorno de desarrollo:** | .net y react |
+| **Repositorio Git (URL):** | https://github.com/catorceno/prograII-proyecto-final.git |
+| **Uso de Inteligencia Artificial:** | Sí |
+
+**Si usas IA, explica brevemente cómo y en qué etapa contribuye:**  
+> _Uso ChatGPT o Claude para el desarrollo de frontend._
+
+---
+
+## 2. Descripción del Proyecto
+
+### Resumen breve
+TeatroTickets es una página web que permite consultar funciones disponibles, visualizar la ubicación de asientos y comprar tickets para obras de teatro. Está dirigido al público en general que desea adquirir tickets, sin necesidad de asistir presencialmente al teatro o buscar y contactar con los artistas de manera directa.
+
+
+### Objetivos principales
+1.  Consultar cartelera del teatro.
+2.  Seleccionar, reservar y pagar por una butaca para una función en específico.
+3.  
+
+---
+
+## 3. Diseño Técnico y Aplicación de POO
+
+### Principios de POO aplicados
+Marca los que planeas usar:
+- [✔] Encapsulamiento (atributos privados y métodos públicos)
+- [✔] Uso de constructores
+- [✔] Herencia
+- [✔] Polimorfismo
+- [✔] Interfaces o clases abstractas
+
+### Clases estimadas
+- **Cantidad inicial de clases:** 10  
+- **Ejemplo de posibles clases:** Usuario, Teatro, Funcion, Cartelera, Butaca, Area, Plano, Ticket, Reserva, Pago, etc.
+
+
+### Persistencia de datos
+- [ ] Archivos locales  
+- [✔] Base de datos  
+- [ ] En memoria (temporal)  
+- [ ] Otro: __________
+
+---
+
+## 4. Funcionalidades Principales
+
+| Nº | Nombre de la funcionalidad | Descripción breve | Estado actual |
+|----|-----------------------------|-------------------|----------------|
+| 1 | Sign in y login | Registro de usuarios e inicio de sesión. | ☐ Planeada |
+| 2 | Consulta de cartelera | Visualizar funciones, filtrado por fecha y categoría | ☐ Planeada |
+| 3 | Reserva de butacas | Mapa de la sala, selección de asiento, reserva temporal y pago. | ☐ Planeada |
+
+---
+
+## 5. Compromiso del Estudiante
+
+Declaro que:
+- Entiendo los criterios de evaluación establecidos en las rúbricas.
+- Presentaré una demostración funcional del proyecto.
+- Defenderé el código que yo mismo implementé y explicaré las clases y métodos principales.
+- Si usé herramientas de IA, comprendo su funcionamiento y las adapté al contexto del proyecto.
+
+**Firma (nombre completo):** Camila Alison Catorceno Orellana  
+
+---
+
+## 6. Validación del Docente *(completa el profesor)*
+
+| Campo | Detalle |
+|--------|---------|
+| **Visto bueno del docente:** | ☐ Aprobado para desarrollar ☐ Requiere ajustes ☐ Rechazado |
+| **Comentarios / Observaciones:** |  |
+| **Firma docente:** |  |
+| **Fecha de revisión:** |  |
+
+---
+
+> **Instrucciones para entrega:**
+> - Guarda este archivo como `README.md` dentro de tu repositorio Git.  
+> - Completa todas las secciones antes de tu presentación inicial.  
+> - No borres las casillas ni el formato para garantizar uniformidad del curso.  
+> - El docente revisará y aprobará esta propuesta antes del desarrollo completo.
+
+---
