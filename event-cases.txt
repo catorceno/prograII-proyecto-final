@@ -1,0 +1,106 @@
+como podría manejar estos casos en mi base de datos?
+evento 1
+organizer: Fases Danza
+name: Festival Internacional de Danza Contemporánea
+theater: Centro Cultural Raúl Otero Reiche
+plays/shows: [
+	1.
+	name: sempiterna
+	performer: Fases Danza
+	price: 0
+	performances: [
+		02-08-2026 19:00
+		02-08-2026 20:00
+	]
+	2.
+	name: vuelta
+	performer: CC
+	price: 0
+	performances: [
+		03-08-2026 19:00
+	]
+	3.
+	name: acero
+	performer: FIDC
+	price: 0
+	performances: [
+		04-08-2026 19:00
+	]
+	4.
+	name: acostumbrarse pero puede cambiar
+	performer: Arte y Canto
+	price: 0
+	performances: [
+		05-08-2026 19:00
+	]
+	5.
+	name: camila mia
+	performer: Maria Juarez, Andrés Ayala y Lucio Loayza
+	price: 35
+	performances: [
+		06-08-2026 19:00
+	]
+]
+
+evento 2
+organizer/performer: Bellart
+name: Corazón de Tinta
+theater: Teatro Eagles
+plays/shows: [
+	1.
+	name: aladín
+	performer: Bellart
+	price pre-sale: 140
+	price: 160
+	performances: [
+		07-08-2026 20:00 price pre-sale: 160bs, price: 180bs (este precio incluye a la obra de la bella y la bestia que sucede el mismo día)
+		08-08-2026 20:00
+		09-08-2026 20:00
+		10-08-2026 20:00
+	]
+	2.
+	name: la bella y la bestía
+	performer: Bellart
+	price pre-sale: 140
+	price: 160
+	performances: [
+		07-08-2026 20:00 price pre-sale: 160bs, price: 180bs
+		11-08-2026 20:00
+		12-08-2026 20:00
+		13-08-2026 20:00
+	]
+]
+evento 3
+organizer/performer: 5,6,7,8 Ballet
+name: El cascanueces
+theater: Centro Cultural Raúl Otero Reiche
+price: 100
+performances: [
+	01-12-2025 20:00
+	02-12-2025 20:00
+]
+evento 4
+organizer: Fases Danza
+name: Temporada de Obras de Danza Contemporanea
+theater: Centro Cultural Villa 1ro de Mayo
+price: 50
+plays/shows: [
+	1.
+	name: vida y obra
+	performer: Fases Danza
+	performance: [
+		01-08-2026
+	]
+	2.
+	name: bailar la canción que no me gusta
+	performer: Camila Bilbao, Marcelo Rene Alcón y Bernardo Rosado Ramos
+	performance: [
+		01-08-2026
+	]
+	3.
+	name: sapiens
+	performer: Fases Danza
+	performance: [
+		01-08-2026
+	]
+]

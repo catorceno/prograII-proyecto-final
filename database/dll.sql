@@ -23,7 +23,6 @@ CREATE TABLE THEATERS (
 	CONSTRAINT FK_theater_user FOREIGN KEY (userID) REFERENCES USERS(userID),
 	CONSTRAINT CHK_theater_capacity CHECK(capacity > 0)
 );
-
 CREATE TABLE SEATING_AREAS (
 	seatingAreaID INT		    PRIMARY KEY IDENTITY(1,1),
 	theaterID	  INT		    NOT NULL,
@@ -32,55 +31,91 @@ CREATE TABLE SEATING_AREAS (
 	CONSTRAINT FK_seatingArea_theater FOREIGN KEY (theaterID) REFERENCES THEATERS(theaterID),
 	CONSTRAINT CHK_seatingArea_capacity CHECK(capacity > 0)
 );
-
-CREATE TABLE BUTACAS (
-	butacaID	  INT		   PRIMARY KEY IDENTITY(1,1),
+CREATE TABLE SEATS (
+	seatID		  INT		   PRIMARY KEY IDENTITY(1,1),
 	seatingAreaID INT		   NOT NULL,
 	[row]		  NVARCHAR(2)  NOT NULL, -- constraint?
 	number		  INT		   NOT NULL,
-	CONSTRAINT FK_butaca_seatingArea FOREIGN KEY (seatingAreaID) REFERENCES SEATING_AREAS(seatingAreaID),
-	CONSTRAINT CHK_butaca_number CHECK(number > 0)
+	CONSTRAINT FK_seat_seatingArea FOREIGN KEY (seatingAreaID) REFERENCES SEATING_AREAS(seatingAreaID),
+	CONSTRAINT CHK_seat_number CHECK(number > 0)
 );
 
-CREATE TABLE [EVENTS] (
+CREATE TABLE PERFORMERS (
+	performerID INT			 PRIMARY KEY IDENTITY(1,1),
+	userID		INT,
+	[name]		NVARCHAR(50) NOT NULL,
+	-- contact -- NULL
+	rol			NVARCHAR(10) NOT NULL, -- organizer, performer. Para organizer userID obligatorio
+	CONSTRAINT FK_performer_user FOREIGN KEY (userID) REFERENCES USERS(userID),
+	CONSTRAINT CHK_performer_rol CHECK(rol IN ('organizer', 'performer'))
+);
+CREATE TABLE [EVENTS] ( -- festival
 	eventID		  INT			PRIMARY KEY IDENTITY(1,1),
 	theaterID	  INT			NOT NULL,
-	title		  NVARCHAR(50)  NOT NULL,	
-	[description] NVARCHAR(200) NOT NULL,
+	performerID	  INT, -- organizer -- NULL
+	title		  NVARCHAR(50),	
+	[description] NVARCHAR(200),
 	category	  NVARCHAR(10)  NOT NULL,
-	playbillPDF   NVARCHAR(255),
-	[datetime]	  DATETIME		NOT NULL,
-	duration	  INT			NOT NULL,
-	[state]		  NVARCHAR(10)  NOT NULL,
+	[type]		  NVARCHAR(10)  NOT NULL,
 	CONSTRAINT FK_event_theater FOREIGN KEY (theaterID) REFERENCES THEATERS(theaterID),
+	CONSTRAINT FK_event_performer FOREIGN KEY (performerID) REFERENCES PERFORMERS(performerID),
 	CONSTRAINT CHK_event_categoty CHECK(category IN ('music', 'dance', 'theatre')),
+	CONSTRAINT CHK_event_type CHECK([type] IN ('festival', 'show', 'unique play'))
+);
+/*
+festival --> unique event, different plays, and there are at least 1 different performer of a play
+show --> unique event, different plays but organizer and performer are the same
+unique play --> unique play, organizer and performer are the same
+
+client: events, plays
+theaters and performers: festival, complete show, unique play
+*/
+CREATE TABLE EVENT_PLAYS (
+	eventID INT NOT NULL,
+	playID  INT NOT NULL,
+	CONSTRAINT FK_event_play FOREIGN KEY (eventID) REFERENCES [EVENTS](eventID),
+	CONSTRAINT FK_play_event FOREIGN KEY (playID) REFERENCES PLAYS(playID)
+);
+CREATE TABLE PLAYS ( -- concert
+	playID		  INT			PRIMARY KEY IDENTITY(1,9),
+	performerID	  INT			NOT NULL,-- performer -- NULL
+	title		  NVARCHAR(50)  NOT NULL,
+	[description] NVARCHAR(75),
+	playbillPDF	  NVARCHAR(200),
+	duration	  INT			NOT NULL
+);
+CREATE TABLE PLAYS_PERFORMANCES (
+	playID			
+	performanceID
+);
+CREATE TABLE PERFORMANCES (
+	performanceID
+	[datetime]
+	[state]
 	CONSTRAINT CHK_event_datetime CHECK([datetime] > GETDATE()),
 	CONSTRAINT CHK_event_duration CHECK(duration > 0),
-	CONSTRAINT CHK_event_state CHECK([state] IN ('active', 'completed', 'presale', 'soldout', 'canceled'))
-);
--- un mismo evento puede suceder en diferentes días y horarios
--- un evento puede tener diferentes obras --> como en el Festival de Contemporáneo
-
-CREATE TABLE EVENT_PRICE_ZONES (
-	priceZoneID INT			  PRIMARY KEY IDENTITY(1,1),
-	eventID		INT			  NOT NULL,
-	[name]		NVARCHAR(10)  NOT NULL,
-	price		DECIMAL(10,2) NOT NULL,
-	CONSTRAINT FK_eventPriceZone_event FOREIGN KEY (eventID) REFERENCES [EVENTS](eventID),
-	CONSTRAINT FK_eventPriceZone_price CHECK(price >= 0)
+	CONSTRAINT CHK_event_state CHECK([state] IN ('presale', 'onsale', 'soldout', 'completed', 'canceled'))
 );
 
-CREATE TABLE EVENT_PRICE_ZONE_SEATS (
-	priceZoneSeatID INT PRIMARY KEY IDENTITY(1,1),
-	priceZoneID		INT			 NOT NULL,
-	butacaID		INT			 NOT NULL,
-	[state]			NVARCHAR(10) NOT NULL,
-	CONSTRAINT FK_eventPriceZoneSeat_eventPriceZone FOREIGN KEY (priceZoneID) REFERENCES EVENT_PRICE_ZONES(priceZoneID),
-	CONSTRAINT FK_eventPriceZoneSeat_butaca FOREIGN KEY (butacaID) REFERENCES BUTACAS(butacaID),
-	CONSTRAINT CHK_eventPriceZoneSeat_state CHECK([state] IN ('available', 'taken', 'disabled'))
+CREATE TABLE PRICE_ZONES (
+	priceZoneID
+	performanceID
+	[name]
+	pricePresale
+	priceOnsale
+);
+CREATE TABLE PRICE_ZONE_SEATS (
+	priceZoneSeatID
+	priceZoneID
+	seatID
+	[state]
+	CONSTRAINT FK_priceZoneSeat_eventPriceZone FOREIGN KEY (priceZoneID) REFERENCES EVENT_PRICE_ZONES(priceZoneID),
+	CONSTRAINT FK_priceZoneSeat_seat FOREIGN KEY (seatID) REFERENCES SEATS(seatID),
+	CONSTRAINT CHK_priceZoneSeat_state CHECK([state] IN ('available', 'occupied', 'disabled', 'completed'))
 );
 
--- cada evento debe tener su propio mapa de asientos
+
+-- cada performance debe tener su propio mapa de asientos
 
 CREATE TABLE RESERVATIONS (
 	reservationID INT			PRIMARY KEY IDENTITY(1,1),
@@ -95,10 +130,10 @@ CREATE TABLE RESERVATIONS (
 CREATE TABLE TICKETS (
 	ticketID	  INT			PRIMARY KEY IDENTITY(1,1),
 	reservationID INT			NOT NULL,
-	butacaID	  INT			NOT NULL,
+	seatID		  INT			NOT NULL,
 	price		  DECIMAL(10,2) NOT NULL,
 	CONSTRAINT FK_tickets_reservation FOREIGN KEY (reservationID) REFERENCES RESERVATIONS(reservationID),
-	CONSTRAINT FK_tickets_butaca FOREIGN KEY (butacaID) REFERENCES BUTACAS(butacaID),
+	CONSTRAINT FK_tickets_seat FOREIGN KEY (seatID) REFERENCES SEATS(seatID),
 	CONSTRAINT CHK_tickets_price CHECK(price >= 0)
 );
 
