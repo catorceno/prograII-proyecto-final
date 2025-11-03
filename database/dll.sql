@@ -1,6 +1,6 @@
-CREATE DATABASE TeatroTickets5;
+CREATE DATABASE TeatroTickets7;
 GO
-USE TeatroTickets5
+USE TeatroTickets7
 GO
 
 CREATE TABLE USERS (
@@ -29,8 +29,6 @@ CREATE TABLE PERFORMERS (
 	CONSTRAINT CHK_performer_state CHECK([state] IN ('registered', 'not registered')), -- userID NOT NULL = registered
 	CONSTRAINT CHK_performer_type CHECK ([type] IN ('academy', 'company', 'independent'))
 );
-ALTER TABLE PERFORMERS
-ALTER COLUMN [type] NVARCHAR(20) NOT NULL;
 
 /*if is register:
 	- it has its own profile
@@ -73,7 +71,7 @@ CREATE TABLE [EVENTS] (
 	[description] NVARCHAR(200) NULL,
 	playbillPDF	  NVARCHAR(200) NULL, -- REVISAR como guardar
 	category	  NVARCHAR(20)  NOT NULL,
-	[type]		  NVARCHAR(10)  NOT NULL,
+	[type]		  NVARCHAR(20)  NOT NULL,
 	[state]		  NVARCHAR(10)  NOT NULL,
 	CONSTRAINT FK_event_theater FOREIGN KEY (theaterID) REFERENCES THEATERS(theaterID),
 	CONSTRAINT FK_event_performer FOREIGN KEY (performerID) REFERENCES PERFORMERS(performerID),
@@ -98,7 +96,7 @@ CREATE TABLE PERFORMANCES (
 	CONSTRAINT CHK_performance_datetime CHECK([datetime] > GETDATE()),
 	CONSTRAINT CHK_performance_state CHECK([state] IN ('presale', 'onsale', 'soldout', 'completed', 'canceled'))
 );
-CREATE TABLE PLAYS_PERFORMANCE (
+CREATE TABLE PLAY_PERFORMANCES (
 	playID		  INT NOT NULL,
 	performanceID INT NOT NULL,
 	CONSTRAINT FK_playPerformance_play FOREIGN KEY (playID) REFERENCES PLAYS(playID),
@@ -127,11 +125,11 @@ CREATE TABLE PRICE_ZONE_SEATS (
 CREATE TABLE RESERVATIONS (
 	reservationID INT PRIMARY KEY IDENTITY(1,1),
 	customerID	  INT			NULL,
-	eventID		  INT			NOT NULL, -- debería ser performanceID
-	total		  DECIMAL(10,2) NOT NULL, -- NULL
+	performanceID INT			NOT NULL,
+	total		  DECIMAL(10,2) NULL,
 	[date]		  DATETIME		NOT NULL CONSTRAINT DF_reservation_date DEFAULT GETDATE(), -- < performance.datetime
 	CONSTRAINT FK_reservation_customer FOREIGN KEY (customerID) REFERENCES CUSTOMERS(customerID),
-	CONSTRAINT FK_reservation_event FOREIGN KEY (eventID) REFERENCES [EVENTS](eventID),
+	CONSTRAINT FK_reservation_performance FOREIGN KEY (performanceID) REFERENCES PERFORMANCES(performanceID),
 	CONSTRAINT CHK_reservation_total CHECK (total >= 0)
 );
 CREATE TABLE TICKETS (
