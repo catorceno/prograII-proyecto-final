@@ -1,0 +1,61 @@
+.row-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 15px;
+  justify-content: center;
+}
+
+.segment-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.segment-name {
+  font-weight: bold;
+  margin: 0;
+  font-size: 12px;
+  text-align: center;
+}
+
+.seats-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.seat {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  background: #444;
+  color: #fff;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: 2px solid #666;
+}
+
+.seat:hover {
+  background: #666;
+}
+
+.row-label {
+  min-width: 40px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+
+.seat-row {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 6px;
+}

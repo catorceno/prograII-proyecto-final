@@ -1,0 +1,15 @@
+
+@if(seatingPlan){
+  @for(row of seatingPlan.rows; track row.name){
+    <p>{{row.name}}</p>
+    
+    @for(seat of row.seats; track seat.number){
+      <p>{{seat.number}}</p>
+    }
+  }
+} @else {
+  <p>no se encontró un plano de las asientos</p>
+}
+<!--
+<app-seating-plan [seatingPlan]="seatingPlan"></app-seating-plan>
+-->

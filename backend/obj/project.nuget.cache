@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "cr9xHQK+/7E=",
+  "dgSpecHash": "I3wuD7LK8QQ=",
   "success": true,
-  "projectFilePath": "C:\\Users\\camila\\Downloads\\prograII-proyecto-final\\backends\\backend\\backend.csproj",
+  "projectFilePath": "C:\\Users\\camila\\Downloads\\prograII-proyecto-final\\backend\\backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\camila\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\camila\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

@@ -4257,11 +4257,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\camila\\Downloads\\prograII-proyecto-final\\backends\\backend\\backend.csproj",
+      "projectUniqueName": "C:\\Users\\camila\\Downloads\\prograII-proyecto-final\\backend\\backend.csproj",
       "projectName": "backend",
-      "projectPath": "C:\\Users\\camila\\Downloads\\prograII-proyecto-final\\backends\\backend\\backend.csproj",
+      "projectPath": "C:\\Users\\camila\\Downloads\\prograII-proyecto-final\\backend\\backend.csproj",
       "packagesPath": "C:\\Users\\camila\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\camila\\Downloads\\prograII-proyecto-final\\backends\\backend\\obj\\",
+      "outputPath": "C:\\Users\\camila\\Downloads\\prograII-proyecto-final\\backend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\camila\\AppData\\Roaming\\NuGet\\NuGet.Config"
