@@ -1,5 +1,9 @@
-USE TeatroTickets7
+USE TeatroTickets8
 GO
+select * from LEVELS
+select * from SEATING_AREAS
+select * from SEGMENTS
+select * from SEATS
 
 ---------------------------- REGISTRAR UN TEATRO
 -- crear cuenta
@@ -12,29 +16,51 @@ GO
 DECLARE @userID1 INT = 1
 DECLARE @name1 NVARCHAR(50) = 'Teatro Municipal 1'
 DECLARE @direction1 NVARCHAR(50) = 'doble via km.7'
-DECLARE @capacity1 INT = 10
 DECLARE @contact NVARCHAR(50) = 'encargado: 77999914, ventas: 76400014'
-INSERT INTO THEATERS(userID, [name], direction, capacity, contact)
-VALUES (@userID1, @name1, @direction1, @capacity1, @contact);
+INSERT INTO THEATERS(userID, [name], direction, contact)
+VALUES (@userID1, @name1, @direction1, @contact);
 GO
 -- mapa del teatro
-INSERT INTO SEATING_AREAS(theaterID, [name], capacity)
-VALUES
-	(1, 'platea', 5),
-	(1, 'anfiteatro', 5);
+/*
+platea
+palcos
+balcones
+*/
+INSERT INTO LEVELS(theaterID, name, position)
+VALUES 
+	(1, 'platea', 0),
+	(1, 'anfiteatro', 1);
 GO
-INSERT INTO SEATS(seatingAreaID, [row], number)
+INSERT INTO SEATING_AREAS(levelID, [name], [type])
+VALUES 
+	(1, NULL, 'stalls'),
+	(2, NULL, 'balcony');
+GO
+INSERT INTO SEGMENTS(seatingAreaID, name, position)
+VALUES
+	(2, NULL, 1),
+	(2, NULL, 2),
+	(3, 'izquierda', 1),
+	(3, 'central', 2),
+	(3, 'derecha', 3);
+GO
+INSERT INTO SEATS(segmentID, [row], number)
 VALUES
 	(1, 'A', 1),
 	(1, 'A', 3),
-	(1, 'A', 5),
+	(2, 'A', 2),
+	(2, 'A', 4),
+	(1, 'B', 1),
 	(1, 'B', 3),
-	(1, 'B', 4),
-	(2, 'A', 1),
-	(2, 'A', 3),
-	(2, 'A', 5),
 	(2, 'B', 2),
-	(2, 'B', 4);
+	(2, 'B', 4),
+	(3, 'A', 1),
+	(3, 'A', 2),
+	(4, 'A', 1),
+	(4, 'A', 2),
+	(4, 'A', 3),
+	(5, 'A', 1),
+	(5, 'A', 2);
 GO
 
 ---------------------------- REGISTRAR UN EVENTO COMO TEATRO

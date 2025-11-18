@@ -21,48 +21,91 @@ CREATE TABLE PERFORMERS (
 	performerID INT PRIMARY KEY IDENTITY(1,1),
 	userID		INT		     NULL,
 	[name]		NVARCHAR(50) NOT NULL,
-	direction	NVARCHAR(50) NULL,
+	[address]	NVARCHAR(50) NULL,
 	contact		NVARCHAR(50) NULL,
-	[state]		NVARCHAR(20) NOT NULL,
 	[type]    NVARCHAR(20) NOT NULL,
 	CONSTRAINT FK_performer_user FOREIGN KEY (userID) REFERENCES USERS(userID),
-	CONSTRAINT CHK_performer_state CHECK([state] IN ('registered', 'not registered')), -- userID NOT NULL = registered
 	CONSTRAINT CHK_performer_type CHECK ([type] IN ('academy', 'company', 'independent'))
 );
-
-/*if is register:
-	- it has its own profile
-	- type of performers:
-		- academy, company: direction
-		- independent
-*/
 CREATE TABLE THEATERS (
-	theaterID INT PRIMARY KEY IDENTITY(1,1),
-	userID	  INT		   NOT NULL,
-	[name]	  NVARCHAR(50) NOT NULL,
-	direction NVARCHAR(50) NOT NULL, -- REVISAR COMO GUARDAR ESTO
-	capacity  INT		   NOT NULL,
-	contact	  NVARCHAR(50) NULL,
+	theaterID 	 INT PRIMARY KEY IDENTITY(1,1),
+	userID	  	 INT		  NOT NULL,
+	[name]	  	 NVARCHAR(50) NOT NULL,
+	[address] 	 NVARCHAR(50) NOT NULL, -- REVISAR COMO GUARDAR ESTO
+	contact	  	 NVARCHAR(50) NOT NULL,
+	capacity  	 INT		  NOT NULL,
 	CONSTRAINT FK_theater_user FOREIGN KEY (userID) REFERENCES USERS(userID),
-	CONSTRAINT CHK_theater_capacity CHECK(capacity > 0) -- capacity < ?
+	CONSTRAINT CHK_theater_capacity CHECK(capacity > 0)
 );
-CREATE TABLE SEATING_AREAS (
-	seatingAreaID INT PRIMARY KEY IDENTITY(1,1),
+
+CREATE TABLE SCHEDULES (
+	scheduleID  INT PRIMARY KEY IDENTITY(1,1),
+	theaterID	INT NOT NULL,
+	[day]		NVARCHAR(20) NOT NULL,
+	openingTime TIME NOT NULL,
+	closingTime TIME NOT NULL,
+	CONSTRAINT FK_theaterSchedule_theater FOREIGN KEY (theaterID) REFERENCES THEATERS(theaterID),
+	CONSTRAINT CHK_theaterSchedule_day CHECK([day] IN ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')),
+	CONSTRAINT CHK_theaterSchedule_closingTime CHECK(closingTime > openingTime)
+);
+CREATE TABLE [ROWS] (
+	rowID	  INT PRIMARY KEY IDENTITY(1,1),
+	theaterID INT		  NOT NULL,
+	[name]	  NVARCHAR(2) NOT NULL,
+	CONSTRAINT FK_row_theater FOREIGN KEY (theaterID) REFERENCES THEATERS(theaterID),
+);
+
+CREATE TABLE SEATS (
+	seatID		INT PRIMARY KEY IDENTITY(1,1),
+	rowID		INT		NOT NULL,
+	[column]    INT		NOT NULL,
+	number		INT		NOT NULL,
+	side		CHAR(1) NOT NULL,
+	CONSTRAINT FK_seat_row FOREIGN KEY (rowID) REFERENCES [ROWS](rowID),
+	CONSTRAINT CHK_seat_side CHECK(side IN ('L', 'R')),
+);
+
+/* CREATE TABLE LEVELS (
+	levelID   INT		   PRIMARY KEY IDENTITY(1,1),
+	theaterID INT		   NOT NULL,
+	[name]    NVARCHAR(20) NOT NULL,
+	-- position  INT		   NOT NULL,
+	CONSTRAINT FK_level_theater FOREIGN KEY (theaterID) REFERENCES THEATERS(theaterID)
+	-- CONSTRAINT CHK_level_position CHECK(position >= 0)
+);
+
+CREATE TABLE AREAS (
+	areaID INT PRIMARY KEY IDENTITY(1,1),
+	-- levelID 	  INT		   NOT NULL,
 	theaterID	  INT		   NOT NULL,
-	[name]		  NVARCHAR(50) NOT NULL, -- name.Upper
-	capacity	  INT		   NOT NULL,
-	CONSTRAINT FK_seatingArea_theater FOREIGN KEY (theaterID) REFERENCES THEATERS(theaterID),
-	CONSTRAINT CHK_seatingArea_capacity CHECK(capacity > 0) -- && capacity <= theaterID.capacity 
+	[type]		  NVARCHAR(10) NOT NULL,
+	-- position	  INT		   NOT NULL,
+	-- CONSTRAINT FK_area_level FOREIGN KEY (levelID) REFERENCES LEVELS(levelID),
+	CONSTRAINT FK_area_theater FOREIGN KEY (theaterID) REFERENCES THEATERS(theaterID),
+	CONSTRAINT CHK_area_type CHECK(type IN ('stalls', 'balcony', 'box'))
+	-- CONSTRAINT CHK_area_position CHECK(position > 0)
+);
+CREATE TABLE SEGMENTS (
+	segmentID	  INT PRIMARY KEY IDENTITY(1,1),
+	theaterID	  INT NOT NULL,
+	position	  INT NOT NULL,
+	CONSTRAINT FK_segment_theater FOREIGN KEY (theaterID) REFERENCES THEATERS(theaterID),
+	CONSTRAINT CHK_segment_position CHECK(position > 0)
+);
+CREATE TABLE [ROWS] (
+	rowID     INT PRIMARY KEY IDENTITY(1,1),
+	segmentID INT		  NOT NULL,
+	[name]	  NVARCHAR(2) NOT NULL, -- row.Upper
+	CONSTRAINT FK_row_segment FOREIGN KEY (segmentID) REFERENCES SEGMENTS(segmentID)
 );
 CREATE TABLE SEATS (
-	seatID		  INT PRIMARY KEY IDENTITY(1,1),
-	seatingAreaID INT		  NOT NULL,
-	[row]		  NVARCHAR(2) NOT NULL, -- row.Upper
-	number		  INT		  NOT NULL, -- REVISAR QUE TIPO DE DATOS DEBERÍA SER?
-	CONSTRAINT FK_seat_seatingArea FOREIGN KEY (seatingAreaID) REFERENCES SEATING_AREAS(seatingAreaID),
+	seatID	 INT PRIMARY KEY IDENTITY(1,1),
+	rowID	 INT NOT NULL,
+	[number] INT NOT NULL,
+	CONSTRAINT FK_seat_row FOREIGN KEY (rowID) REFERENCES [ROWS](rowID),
 	CONSTRAINT CHK_seat_number CHECK(number > 0)
 );
-
+*/
 CREATE TABLE [EVENTS] (
 	eventID		  INT PRIMARY KEY IDENTITY(1,1),
 	theaterID	  INT			NOT NULL,
@@ -72,12 +115,12 @@ CREATE TABLE [EVENTS] (
 	playbillPDF	  NVARCHAR(200) NULL, -- REVISAR como guardar
 	category	  NVARCHAR(20)  NOT NULL,
 	[type]		  NVARCHAR(20)  NOT NULL,
-	[state]		  NVARCHAR(10)  NOT NULL,
+	[state]		  NVARCHAR(20)  NOT NULL,
 	CONSTRAINT FK_event_theater FOREIGN KEY (theaterID) REFERENCES THEATERS(theaterID),
 	CONSTRAINT FK_event_performer FOREIGN KEY (performerID) REFERENCES PERFORMERS(performerID),
 	CONSTRAINT CHK_event_category CHECK(category IN ('music', 'dance', 'theatre')),
 	CONSTRAINT CHK_event_type CHECK([type] IN ('festival', 'show', 'unique play')),
-	CONSTRAINT CHK_event_state CHECK([state] IN ('draft', 'published', 'completed'))
+	CONSTRAINT CHK_event_state CHECK([state] IN ('draft', 'requested', 'dennied', 'accepted', 'published', 'completed', 'canceled')) -- rejected
 );
 CREATE TABLE PLAYS (
 	playID		  INT PRIMARY KEY IDENTITY(1,1),
