@@ -1,9 +1,50 @@
 
 using backend.Entities;
+
+public class SeatingPlanService : ISeatingPlanService
+{
+    /*
+    private readonly IUnitOfWork unitOfWork;
+    public SeatingPlanService(IUnitOfWork unitOfWork)
+    {
+        this.unitOfWork = unitOfWork;
+    }
+    */
+    private readonly ISeatingPlanRepository seatingPlanRepository;
+    public SeatingPlanService(ISeatingPlanRepository seatingPlanRepository)
+    {
+        this.seatingPlanRepository = seatingPlanRepository;
+    }
+    public async Task<SeatingPlanDto> GetByTheaterId(int id)
+    {
+        var rows = await seatingPlanRepository.GetRowWithSeatByTheaterId(id);
+        var seatingPlanDto = new SeatingPlanDto
+        {
+            TheaterId = id,
+            Rows = rows.Select(r => new RowDto
+            {
+                Name = r.Name,
+                Seats = r.Seats.Select(s => new SeatDto
+                {
+                    Column = s.Column,
+                    Number = s.Number,
+                    Side = s.Side == "L" ? Side.L : Side.R
+                }).ToList()
+            }).ToList()
+        };
+
+        return seatingPlanDto;
+    }
+
+    public async Task GetByPerformanceId(int id)
+    {
+    }
+}
+
+/*
+using backend.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using AutoMapper;
-using System.Collections.Generic;
 
 public class SeatingPlanService : ISeatingPlanService
 {
@@ -34,3 +75,4 @@ public class SeatingPlanService : ISeatingPlanService
         return dto;
     }
 }
+*/

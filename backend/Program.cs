@@ -66,8 +66,20 @@ builder.Services.AddAutoMapper(typeof(MappingProfile)); // Program
 builder.Services.AddDbContext<TeatroTickets7Context>(opciones =>
     opciones.UseSqlServer("Name=DefaultConnection"));
 
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ISeatingPlanRepository, SeatingPlanRepository>();
+
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ISeatingPlanService, SeatingPlanService>();
+
+var origenesPermitidos = builder.Configuration.GetValue<string>("OrigenesPermitidos")!.Split(",");
+builder.Services.AddCors(opciones =>
+{
+    opciones.AddDefaultPolicy(politica =>
+    {
+        politica.WithOrigins(origenesPermitidos).AllowAnyHeader().AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -79,6 +91,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-// app.UseCors();
+app.UseCors();
 app.MapControllers();
 app.Run();

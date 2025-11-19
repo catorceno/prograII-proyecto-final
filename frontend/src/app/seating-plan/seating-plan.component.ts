@@ -10,13 +10,13 @@ import { SeatingPlanService } from '../seating-plan.service';
   styleUrl: './seating-plan.component.css'
 })
 export class SeatingPlanComponent {
-  @Input() id: number;
+  // @Input() id: number;
   
   seatingPlanService = inject(SeatingPlanService);
   seatingPlan?: SeatingPlan;
 
   constructor(){
-    this.seatingPlanService.getByTheaterId(this.id).subscribe(seatingPlan => {
+    this.seatingPlanService.getByTheaterId(1).subscribe(seatingPlan => {
       this.seatingPlan = seatingPlan;
     });
   }

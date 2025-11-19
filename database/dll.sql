@@ -65,47 +65,6 @@ CREATE TABLE SEATS (
 	CONSTRAINT CHK_seat_side CHECK(side IN ('L', 'R')),
 );
 
-/* CREATE TABLE LEVELS (
-	levelID   INT		   PRIMARY KEY IDENTITY(1,1),
-	theaterID INT		   NOT NULL,
-	[name]    NVARCHAR(20) NOT NULL,
-	-- position  INT		   NOT NULL,
-	CONSTRAINT FK_level_theater FOREIGN KEY (theaterID) REFERENCES THEATERS(theaterID)
-	-- CONSTRAINT CHK_level_position CHECK(position >= 0)
-);
-
-CREATE TABLE AREAS (
-	areaID INT PRIMARY KEY IDENTITY(1,1),
-	-- levelID 	  INT		   NOT NULL,
-	theaterID	  INT		   NOT NULL,
-	[type]		  NVARCHAR(10) NOT NULL,
-	-- position	  INT		   NOT NULL,
-	-- CONSTRAINT FK_area_level FOREIGN KEY (levelID) REFERENCES LEVELS(levelID),
-	CONSTRAINT FK_area_theater FOREIGN KEY (theaterID) REFERENCES THEATERS(theaterID),
-	CONSTRAINT CHK_area_type CHECK(type IN ('stalls', 'balcony', 'box'))
-	-- CONSTRAINT CHK_area_position CHECK(position > 0)
-);
-CREATE TABLE SEGMENTS (
-	segmentID	  INT PRIMARY KEY IDENTITY(1,1),
-	theaterID	  INT NOT NULL,
-	position	  INT NOT NULL,
-	CONSTRAINT FK_segment_theater FOREIGN KEY (theaterID) REFERENCES THEATERS(theaterID),
-	CONSTRAINT CHK_segment_position CHECK(position > 0)
-);
-CREATE TABLE [ROWS] (
-	rowID     INT PRIMARY KEY IDENTITY(1,1),
-	segmentID INT		  NOT NULL,
-	[name]	  NVARCHAR(2) NOT NULL, -- row.Upper
-	CONSTRAINT FK_row_segment FOREIGN KEY (segmentID) REFERENCES SEGMENTS(segmentID)
-);
-CREATE TABLE SEATS (
-	seatID	 INT PRIMARY KEY IDENTITY(1,1),
-	rowID	 INT NOT NULL,
-	[number] INT NOT NULL,
-	CONSTRAINT FK_seat_row FOREIGN KEY (rowID) REFERENCES [ROWS](rowID),
-	CONSTRAINT CHK_seat_number CHECK(number > 0)
-);
-*/
 CREATE TABLE [EVENTS] (
 	eventID		  INT PRIMARY KEY IDENTITY(1,1),
 	theaterID	  INT			NOT NULL,
@@ -194,3 +153,46 @@ CREATE TABLE PAYMENTS (
 	CONSTRAINT CHK_payment_method CHECK(method IN ('qr', 'tarjeta', 'efectivo')),
 	CONSTRAINT CHK_payment_amount CHECK(amount > 0)
 );
+
+
+/* CREATE TABLE LEVELS (
+	levelID   INT		   PRIMARY KEY IDENTITY(1,1),
+	theaterID INT		   NOT NULL,
+	[name]    NVARCHAR(20) NOT NULL,
+	-- position  INT		   NOT NULL,
+	CONSTRAINT FK_level_theater FOREIGN KEY (theaterID) REFERENCES THEATERS(theaterID)
+	-- CONSTRAINT CHK_level_position CHECK(position >= 0)
+);
+
+CREATE TABLE AREAS (
+	areaID INT PRIMARY KEY IDENTITY(1,1),
+	-- levelID 	  INT		   NOT NULL,
+	theaterID	  INT		   NOT NULL,
+	[type]		  NVARCHAR(10) NOT NULL,
+	-- position	  INT		   NOT NULL,
+	-- CONSTRAINT FK_area_level FOREIGN KEY (levelID) REFERENCES LEVELS(levelID),
+	CONSTRAINT FK_area_theater FOREIGN KEY (theaterID) REFERENCES THEATERS(theaterID),
+	CONSTRAINT CHK_area_type CHECK(type IN ('stalls', 'balcony', 'box'))
+	-- CONSTRAINT CHK_area_position CHECK(position > 0)
+);
+CREATE TABLE SEGMENTS (
+	segmentID	  INT PRIMARY KEY IDENTITY(1,1),
+	theaterID	  INT NOT NULL,
+	position	  INT NOT NULL,
+	CONSTRAINT FK_segment_theater FOREIGN KEY (theaterID) REFERENCES THEATERS(theaterID),
+	CONSTRAINT CHK_segment_position CHECK(position > 0)
+);
+CREATE TABLE [ROWS] (
+	rowID     INT PRIMARY KEY IDENTITY(1,1),
+	segmentID INT		  NOT NULL,
+	[name]	  NVARCHAR(2) NOT NULL, -- row.Upper
+	CONSTRAINT FK_row_segment FOREIGN KEY (segmentID) REFERENCES SEGMENTS(segmentID)
+);
+CREATE TABLE SEATS (
+	seatID	 INT PRIMARY KEY IDENTITY(1,1),
+	rowID	 INT NOT NULL,
+	[number] INT NOT NULL,
+	CONSTRAINT FK_seat_row FOREIGN KEY (rowID) REFERENCES [ROWS](rowID),
+	CONSTRAINT CHK_seat_number CHECK(number > 0)
+);
+*/
