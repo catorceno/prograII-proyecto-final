@@ -32,7 +32,7 @@ TeatroTickets es una página web que permite consultar funciones disponibles, vi
 ### Objetivos principales
 1.  Consultar cartelera del teatro.
 2.  Seleccionar, reservar y pagar por una butaca para una función en específico.
-3.  
+3.  El teatro puede gestionar las solicitudes de publicación de nuevas obras teatrales enviadas por los artistas.
 
 ---
 
@@ -66,6 +66,9 @@ Marca los que planeas usar:
 | 1 | Consulta de cartelera | Visualizar funciones disponibles | ☐ Planeada |
 | 2 | Reserva de butacas | Mapa de la sala, selección de asiento y reserva temporal | ☐ Planeada |
 | 3 | Proceso de pago | Realizar pago y registrar ticket | ☐ Planeada |
+| 4 | Enviar solicitudes de publicación | El artista registrado crear eventos y enviar solicitudes al teatro | ☐ Planeada |
+| 5 | Gestión solicitudes | El teatro puede ver solicitudes pendientes y aceptarlas o rechazarlas | ☐ Planeada |
+| 6 | Publicar obras | Publicar las solicitudes aceptadas | ☐ Planeada |
 
 ---
 
