@@ -1,32 +1,36 @@
 
-using AutoMapper;
 using backend.Entities;
 
-public class PerformerService: IPerformerService
+public class PerformerService : IPerformerService
 {
-    private readonly TeatroTickets7Context context;
-    private readonly IMapper mapper;
-    public PerformerService(TeatroTickets7Context context, IMapper mapper)
+    private readonly TeatroTickets2Context _context;
+    public PerformerService(TeatroTickets2Context context)
     {
-        this.context = context;
-        this.mapper = mapper;
+        _context = context;
     }
 
-    public async Task CreateRequest(EventCreateDto eventDto)
+    public async Task<int> Signin(PerformerCreateDto performerDto)
     {
-        var newEvent = mapper.Map<Event>(eventDto);
-        context.Events.Add(newEvent);
-        if(eventDto.Plays != null)
+        var newUser = new User
         {
-            newEvent.Plays = new List<Play>();
-            foreach (var playDto in eventDto.Plays)
-            {
-                var newPlay = mapper.Map<PlayPerformance>(playDto);
-                if(playDto.Performances != null)
-                {
-                    
-                }
-            }
-        }
+            Email = performerDto.Email,
+            Password = performerDto.Password,
+            Rol = "performer"
+        };
+        _context.Users.Add(newUser);
+        await _context.SaveChangesAsync();
+
+        var newPerformer = new Performer
+        {
+            UserId = newUser.UserId,
+            Name = performerDto.Name,
+            Address = performerDto.Address,
+            Contact = performerDto.Contact,
+            Type = performerDto.Type
+        };
+        _context.Performers.Add(newPerformer);
+        await _context.SaveChangesAsync();
+
+        return newPerformer.PerformerId;
     }
 }

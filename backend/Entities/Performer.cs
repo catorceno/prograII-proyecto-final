@@ -13,12 +13,11 @@ public partial class Performer
 
     public string? Address { get; set; }
 
-    public string? Contact { get; set; }
+    public string Contact { get; set; } = null!;
 
-    public string Type { get; set; } = null!;
-
-    public virtual ICollection<Event> Events { get; set; } = new List<Event>();
-
+    // public string Type { get; set; } = null!;
+    public PerformerType Type { get; set; }
+    
     public virtual ICollection<Play> Plays { get; set; } = new List<Play>();
 
     public virtual User? User { get; set; }

@@ -11,7 +11,7 @@ public partial class Ticket
 
     public int PriceZoneSeatId { get; set; }
 
-    public int Price { get; set; }
+    public decimal Price { get; set; }
 
     public virtual PriceZoneSeat PriceZoneSeat { get; set; } = null!;
 

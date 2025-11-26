@@ -1,22 +1,22 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Entities;
 
-public partial class TeatroTickets7Context : DbContext
+public partial class TeatroTickets2Context : DbContext
 {
-    public TeatroTickets7Context()
+    public TeatroTickets2Context()
     {
     }
 
-    public TeatroTickets7Context(DbContextOptions<TeatroTickets7Context> options)
+    public TeatroTickets2Context(DbContextOptions<TeatroTickets2Context> options)
         : base(options)
     {
     }
 
     public virtual DbSet<Customer> Customers { get; set; }
-
-    public virtual DbSet<Event> Events { get; set; }
 
     public virtual DbSet<Payment> Payments { get; set; }
 
@@ -25,8 +25,6 @@ public partial class TeatroTickets7Context : DbContext
     public virtual DbSet<Performer> Performers { get; set; }
 
     public virtual DbSet<Play> Plays { get; set; }
-
-    public virtual DbSet<PlayPerformance> PlayPerformances { get; set; }
 
     public virtual DbSet<PriceZone> PriceZones { get; set; }
 
@@ -45,16 +43,16 @@ public partial class TeatroTickets7Context : DbContext
     public virtual DbSet<Ticket> Tickets { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
-
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-6L6ASHP\\SQLEXPRESS;Database=TeatroTickets7;Integrated Security=True;TrustServerCertificate=True");
-
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-6L6ASHP\\SQLEXPRESS;Database=TeatroTickets2;Integrated Security=True;TrustServerCertificate=True");
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Customer>(entity =>
         {
-            entity.HasKey(e => e.CustomerId).HasName("PK__CUSTOMER__B611CB9D095BA2E6");
+            entity.HasKey(e => e.CustomerId).HasName("PK__CUSTOMER__B611CB9D16D63BA3");
 
             entity.ToTable("CUSTOMERS");
 
@@ -73,47 +71,9 @@ public partial class TeatroTickets7Context : DbContext
                 .HasConstraintName("FK_customer_user");
         });
 
-        modelBuilder.Entity<Event>(entity =>
-        {
-            entity.HasKey(e => e.EventId).HasName("PK__EVENTS__2DC7BD6962E7D5D8");
-
-            entity.ToTable("EVENTS");
-
-            entity.Property(e => e.EventId).HasColumnName("eventID");
-            entity.Property(e => e.Category)
-                .HasMaxLength(20)
-                .HasColumnName("category");
-            entity.Property(e => e.Description)
-                .HasMaxLength(200)
-                .HasColumnName("description");
-            entity.Property(e => e.PerformerId).HasColumnName("performerID");
-            entity.Property(e => e.PlaybillPdf)
-                .HasMaxLength(200)
-                .HasColumnName("playbillPDF");
-            entity.Property(e => e.State)
-                .HasMaxLength(20)
-                .HasColumnName("state");
-            entity.Property(e => e.TheaterId).HasColumnName("theaterID");
-            entity.Property(e => e.Title)
-                .HasMaxLength(50)
-                .HasColumnName("title");
-            entity.Property(e => e.Type)
-                .HasMaxLength(20)
-                .HasColumnName("type");
-
-            entity.HasOne(d => d.Performer).WithMany(p => p.Events)
-                .HasForeignKey(d => d.PerformerId)
-                .HasConstraintName("FK_event_performer");
-
-            entity.HasOne(d => d.Theater).WithMany(p => p.Events)
-                .HasForeignKey(d => d.TheaterId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_event_theater");
-        });
-
         modelBuilder.Entity<Payment>(entity =>
         {
-            entity.HasKey(e => e.PaymentId).HasName("PK__PAYMENTS__A0D9EFA6A9AB14C7");
+            entity.HasKey(e => e.PaymentId).HasName("PK__PAYMENTS__A0D9EFA672B2B18E");
 
             entity.ToTable("PAYMENTS");
 
@@ -126,6 +86,10 @@ public partial class TeatroTickets7Context : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("date");
             entity.Property(e => e.Method)
+                .HasConversion(
+                    v => v.HasValue ? v.Value.ToString().ToLower() : null,
+                    v => v != null ? (PaymentMethod)Enum.Parse(typeof(PaymentMethod), v, true) : (PaymentMethod?)null
+                )
                 .HasMaxLength(20)
                 .HasColumnName("method");
             entity.Property(e => e.ReservationId).HasColumnName("reservationID");
@@ -138,7 +102,7 @@ public partial class TeatroTickets7Context : DbContext
 
         modelBuilder.Entity<Performance>(entity =>
         {
-            entity.HasKey(e => e.PerformanceId).HasName("PK__PERFORMA__AC2FDEC1C678631E");
+            entity.HasKey(e => e.PerformanceId).HasName("PK__PERFORMA__AC2FDEC1B53FFC5D");
 
             entity.ToTable("PERFORMANCES");
 
@@ -146,14 +110,25 @@ public partial class TeatroTickets7Context : DbContext
             entity.Property(e => e.Datetime)
                 .HasColumnType("datetime")
                 .HasColumnName("datetime");
+            entity.Property(e => e.PlayId).HasColumnName("playID");
             entity.Property(e => e.State)
-                .HasMaxLength(10)
+                .HasConversion(
+                    v => v.ToString().ToLower(),
+                    v => (PerformanceState)Enum.Parse(typeof(PerformanceState), v)
+                )
+                .HasMaxLength(20)
+                // .HasDefaultValue("created", "DF_performance_state")
                 .HasColumnName("state");
+
+            entity.HasOne(d => d.Play).WithMany(p => p.Performances)
+                .HasForeignKey(d => d.PlayId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_performance_play");
         });
 
         modelBuilder.Entity<Performer>(entity =>
         {
-            entity.HasKey(e => e.PerformerId).HasName("PK__PERFORME__90A94E61A48FBDD4");
+            entity.HasKey(e => e.PerformerId).HasName("PK__PERFORME__90A94E6122997653");
 
             entity.ToTable("PERFORMERS");
 
@@ -168,6 +143,10 @@ public partial class TeatroTickets7Context : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("name");
             entity.Property(e => e.Type)
+                .HasConversion(
+                    v => v.ToString().ToLower(),
+                    v => (PerformerType)Enum.Parse(typeof(PerformerType), v)
+                )
                 .HasMaxLength(20)
                 .HasColumnName("type");
             entity.Property(e => e.UserId).HasColumnName("userID");
@@ -179,55 +158,68 @@ public partial class TeatroTickets7Context : DbContext
 
         modelBuilder.Entity<Play>(entity =>
         {
-            entity.HasKey(e => e.PlayId).HasName("PK__PLAYS__A77B07D7D6524EA0");
+            entity.HasKey(e => e.PlayId).HasName("PK__PLAYS__A77B07D7C89B34DF");
 
             entity.ToTable("PLAYS");
 
             entity.Property(e => e.PlayId).HasColumnName("playID");
+            entity.Property(e => e.Category)
+                .HasConversion(
+                    v => v.HasValue ? v.Value.ToString().ToLower() : null,
+                    v => v != null ? (PlayCategory)Enum.Parse(typeof(PlayCategory), v, true) : (PlayCategory?)null
+                )
+                /*
+                .HasConversion(
+                    v => v.ToString(),
+                    v => (PlayCategory)Enum.Parse(typeof(PlayCategory), v)
+                )
+                .HasConversion(
+                    v => v.HasValue ? v.Value.ToString().ToLower() : null,
+                    v => v != null ? (PlayCategory)Enum.Parse(typeof(PlayCategory), v) : (PlayCategory?)null
+                )
+                */
+                .HasMaxLength(20)
+                .HasColumnName("category");
+            entity.Property(e => e.DateStartOnsale)
+                .HasColumnType("datetime")
+                .HasColumnName("dateStartOnsale");
+            entity.Property(e => e.DateStartPresale)
+                .HasColumnType("datetime")
+                .HasColumnName("dateStartPresale");
             entity.Property(e => e.Description)
-                .HasMaxLength(200)
+                .HasMaxLength(1000)
                 .HasColumnName("description");
             entity.Property(e => e.Duration).HasColumnName("duration");
-            entity.Property(e => e.EventId).HasColumnName("eventID");
             entity.Property(e => e.PerformerId).HasColumnName("performerID");
+            entity.Property(e => e.PlaybillPdf)
+                .HasMaxLength(200)
+                .HasColumnName("playbillPDF");
+            entity.Property(e => e.State)
+                .HasConversion(
+                    v => v.ToString().ToLower(),
+                    v => (PlayState)Enum.Parse(typeof(PlayState), v)
+                )
+                .HasMaxLength(20)
+                // .HasDefaultValue("draft", "DF_event_state")
+                .HasColumnName("state");
+            entity.Property(e => e.TheaterId).HasColumnName("theaterID");
             entity.Property(e => e.Title)
                 .HasMaxLength(50)
                 .HasColumnName("title");
 
-            entity.HasOne(d => d.Event).WithMany(p => p.Plays)
-                .HasForeignKey(d => d.EventId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_play_event");
-
             entity.HasOne(d => d.Performer).WithMany(p => p.Plays)
                 .HasForeignKey(d => d.PerformerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_play_performer");
-        });
 
-        modelBuilder.Entity<PlayPerformance>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("PLAY_PERFORMANCES");
-
-            entity.Property(e => e.PerformanceId).HasColumnName("performanceID");
-            entity.Property(e => e.PlayId).HasColumnName("playID");
-
-            entity.HasOne(d => d.Performance).WithMany()
-                .HasForeignKey(d => d.PerformanceId)
+            entity.HasOne(d => d.Theater).WithMany(p => p.Plays)
+                .HasForeignKey(d => d.TheaterId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_playPerformance_performance");
-
-            entity.HasOne(d => d.Play).WithMany()
-                .HasForeignKey(d => d.PlayId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_playPerformance_play");
+                .HasConstraintName("FK_play_theater");
         });
 
         modelBuilder.Entity<PriceZone>(entity =>
         {
-            entity.HasKey(e => e.PriceZoneId).HasName("PK__PRICE_ZO__A89565DA118EAE6B");
+            entity.HasKey(e => e.PriceZoneId).HasName("PK__PRICE_ZO__A89565DA7938F444");
 
             entity.ToTable("PRICE_ZONES");
 
@@ -242,11 +234,16 @@ public partial class TeatroTickets7Context : DbContext
             entity.Property(e => e.PricePresale)
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("pricePresale");
+
+            entity.HasOne(d => d.Performance).WithMany(p => p.PriceZones)
+                .HasForeignKey(d => d.PerformanceId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_priceZone_performance");
         });
 
         modelBuilder.Entity<PriceZoneSeat>(entity =>
         {
-            entity.HasKey(e => e.PriceZoneSeatId).HasName("PK__PRICE_ZO__369BC3918BE8AEB3");
+            entity.HasKey(e => e.PriceZoneSeatId).HasName("PK__PRICE_ZO__369BC391D53FFDC9");
 
             entity.ToTable("PRICE_ZONE_SEATS");
 
@@ -254,8 +251,12 @@ public partial class TeatroTickets7Context : DbContext
             entity.Property(e => e.PriceZoneId).HasColumnName("priceZoneID");
             entity.Property(e => e.SeatId).HasColumnName("seatID");
             entity.Property(e => e.State)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => (PriceZoneSeatState)Enum.Parse(typeof(PriceZoneSeatState), v)
+                )
                 .HasMaxLength(10)
-                .HasDefaultValue("available", "DF_priceZoneSeat_state")
+                // .HasDefaultValue("available", "DF_priceZoneSeat_state")
                 .HasColumnName("state");
 
             entity.HasOne(d => d.PriceZone).WithMany(p => p.PriceZoneSeats)
@@ -271,7 +272,7 @@ public partial class TeatroTickets7Context : DbContext
 
         modelBuilder.Entity<Reservation>(entity =>
         {
-            entity.HasKey(e => e.ReservationId).HasName("PK__RESERVAT__B14BF5A5FF028CC4");
+            entity.HasKey(e => e.ReservationId).HasName("PK__RESERVAT__B14BF5A5E11DC0F4");
 
             entity.ToTable("RESERVATIONS");
 
@@ -298,15 +299,13 @@ public partial class TeatroTickets7Context : DbContext
 
         modelBuilder.Entity<Row>(entity =>
         {
-            entity.HasKey(e => e.RowId).HasName("PK__ROWS__4B58DA6082369CB8");
+            entity.HasKey(e => e.RowId).HasName("PK__ROWS__4B58DA60A1431F4F");
 
             entity.ToTable("ROWS");
 
             entity.Property(e => e.RowId).HasColumnName("rowID");
             entity.Property(e => e.Name)
                 .HasMaxLength(2)
-                .IsUnicode(false)
-                .IsFixedLength()
                 .HasColumnName("name");
             entity.Property(e => e.TheaterId).HasColumnName("theaterID");
 
@@ -318,7 +317,7 @@ public partial class TeatroTickets7Context : DbContext
 
         modelBuilder.Entity<Schedule>(entity =>
         {
-            entity.HasKey(e => e.ScheduleId).HasName("PK__SCHEDULE__A532EDB475001EA0");
+            entity.HasKey(e => e.ScheduleId).HasName("PK__SCHEDULE__A532EDB4965BBBAD");
 
             entity.ToTable("SCHEDULES");
 
@@ -338,7 +337,7 @@ public partial class TeatroTickets7Context : DbContext
 
         modelBuilder.Entity<Seat>(entity =>
         {
-            entity.HasKey(e => e.SeatId).HasName("PK__SEATS__BC5329CA142C6EFB");
+            entity.HasKey(e => e.SeatId).HasName("PK__SEATS__BC5329CA3089C2CD");
 
             entity.ToTable("SEATS");
 
@@ -347,6 +346,10 @@ public partial class TeatroTickets7Context : DbContext
             entity.Property(e => e.Number).HasColumnName("number");
             entity.Property(e => e.RowId).HasColumnName("rowID");
             entity.Property(e => e.Side)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => (SeatSide)Enum.Parse(typeof(SeatSide), v)
+                )
                 .HasMaxLength(1)
                 .IsUnicode(false)
                 .IsFixedLength()
@@ -360,7 +363,7 @@ public partial class TeatroTickets7Context : DbContext
 
         modelBuilder.Entity<Theater>(entity =>
         {
-            entity.HasKey(e => e.TheaterId).HasName("PK__THEATERS__C94587D5E1EB2C03");
+            entity.HasKey(e => e.TheaterId).HasName("PK__THEATERS__C94587D50E4F61DF");
 
             entity.ToTable("THEATERS");
 
@@ -385,7 +388,7 @@ public partial class TeatroTickets7Context : DbContext
 
         modelBuilder.Entity<Ticket>(entity =>
         {
-            entity.HasKey(e => e.TicketId).HasName("PK__TICKETS__3333C670233C26A2");
+            entity.HasKey(e => e.TicketId).HasName("PK__TICKETS__3333C670B39A2C76");
 
             entity.ToTable("TICKETS");
 
@@ -407,7 +410,7 @@ public partial class TeatroTickets7Context : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__USERS__CB9A1CDFCE8C53B2");
+            entity.HasKey(e => e.UserId).HasName("PK__USERS__CB9A1CDFAEA049C0");
 
             entity.ToTable("USERS");
 

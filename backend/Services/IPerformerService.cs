@@ -1,5 +1,5 @@
 
 public interface IPerformerService
 {
-    Task CreateRequest(EventCreateDto eventDto);
+    Task<int> Signin(PerformerCreateDto performerDto);
 }

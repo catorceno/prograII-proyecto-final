@@ -9,7 +9,8 @@ public partial class Payment
 
     public int ReservationId { get; set; }
 
-    public string Method { get; set; } = null!;
+    // public string Method { get; set; } = null!;
+    public PaymentMethod? Method { get; set; }
 
     public decimal Amount { get; set; }
 

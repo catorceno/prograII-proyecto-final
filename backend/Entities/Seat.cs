@@ -13,8 +13,9 @@ public partial class Seat
 
     public int Number { get; set; }
 
-    public string Side { get; set; } = null!;
-
+    //public string Side { get; set; } = null!;
+    public SeatSide Side { get; set; }
+    
     public virtual ICollection<PriceZoneSeat> PriceZoneSeats { get; set; } = new List<PriceZoneSeat>();
 
     public virtual Row Row { get; set; } = null!;

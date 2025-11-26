@@ -15,5 +15,7 @@ public partial class PriceZone
 
     public decimal Price { get; set; }
 
+    public virtual Performance Performance { get; set; } = null!;
+
     public virtual ICollection<PriceZoneSeat> PriceZoneSeats { get; set; } = new List<PriceZoneSeat>();
 }

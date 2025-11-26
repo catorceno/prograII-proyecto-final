@@ -17,7 +17,7 @@ public partial class Theater
 
     public int Capacity { get; set; }
 
-    public virtual ICollection<Event> Events { get; set; } = new List<Event>();
+    public virtual ICollection<Play> Plays { get; set; } = new List<Play>();
 
     public virtual ICollection<Row> Rows { get; set; } = new List<Row>();
 

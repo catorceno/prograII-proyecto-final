@@ -11,8 +11,9 @@ public partial class PriceZoneSeat
 
     public int SeatId { get; set; }
 
-    public string State { get; set; } = null!;
-
+    // public string State { get; set; } = null!;
+    public PriceZoneSeatState State { get; set; }
+    
     public virtual PriceZone PriceZone { get; set; } = null!;
 
     public virtual Seat Seat { get; set; } = null!;
