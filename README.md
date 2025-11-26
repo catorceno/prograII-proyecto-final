@@ -66,8 +66,8 @@ Marca los que planeas usar:
 | 1 | Consulta de cartelera | Visualizar funciones disponibles | ☐ Planeada |
 | 2 | Reserva de butacas | Mapa de la sala, selección de asiento y reserva temporal | ☐ Planeada |
 | 3 | Proceso de pago | Realizar pago y registrar ticket | ☐ Planeada |
-| 4 | Crear una obra con funciones | Definir datos de la obra y su funciones | ☐ Planeada |
-| 5 | Crear el plano de asientos | Definir diferentes precios por zona en el plano de asientos del teatro | ☐ Planeada |
+| 4 | Procesar una obra con funciones | Definir datos de la obra y su funciones | ☐ Planeada |
+| 5 | Procesar el plano de asientos | Definir diferentes precios por zona en el plano de asientos del teatro | ☐ Planeada |
 | 6 | Gestión solicitudes | El teatro puede ver solicitudes pendientes y aceptarlas o rechazarlas | ☐ Planeada |
 | 7 | Publicar obras | Publicar las solicitudes aceptadas en la fecha establecida | ☐ Planeada |
 
