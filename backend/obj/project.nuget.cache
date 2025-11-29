@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "AzqZ51mVSmk=",
+  "dgSpecHash": "2vk9d3yKKbQ=",
   "success": true,
-  "projectFilePath": "C:\\Users\\camila\\Downloads\\repos\\prograII-proyecto-final\\backend\\backend.csproj",
+  "projectFilePath": "C:\\Users\\camila\\Downloads\\proyectos\\prograII-proyecto-final\\backend\\backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\camila\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\camila\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",

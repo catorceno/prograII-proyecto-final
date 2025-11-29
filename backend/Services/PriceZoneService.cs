@@ -19,7 +19,6 @@ public class PriceZoneService : IPriceZoneService
         
         foreach(var performanceId in performanceIds)
         {
-            Console.WriteLine("hey, id = " + performanceId);
             var newPriceZone = new PriceZone
             {
                 PerformanceId = performanceId,
